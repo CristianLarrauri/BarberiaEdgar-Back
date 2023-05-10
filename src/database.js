@@ -39,9 +39,14 @@ let capsEntries = entries.map((entry) => [
 sequelize.models = Object.fromEntries(capsEntries);
 
 // Importar tablas:
-const {} = sequelize.models;
+const { Customers, Barbers, Shifts } = sequelize.models;
 
 // Relaciones:
+Customers.belongsToMany(Shifts, { through: Customers_Shifts });
+Shifts.belongsToMany(Customers, { through: Customers_Shifts });
+
+Barbers.belongsToMany(Shifts, { through: Barbers_Shifts });
+Shifts.belongsToMany(Barbers, { through: Barbers_Shifts });
 
 module.exports = {
   ...sequelize.models,
