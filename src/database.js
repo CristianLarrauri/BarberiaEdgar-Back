@@ -42,11 +42,11 @@ sequelize.models = Object.fromEntries(capsEntries);
 const { Customers, Barbers, Shifts } = sequelize.models;
 
 // Relaciones:
-Customers.belongsToMany(Shifts, { through: Customers_Shifts });
-Shifts.belongsToMany(Customers, { through: Customers_Shifts });
+Customers.belongsToMany(Shifts, { through: "Customers_Shifts" });
+Shifts.belongsToMany(Customers, { through: "Customers_Shifts" });
 
-Barbers.belongsToMany(Shifts, { through: Barbers_Shifts });
-Shifts.belongsToMany(Barbers, { through: Barbers_Shifts });
+Barbers.belongsToMany(Shifts, { through: "Barbers_Shifts" });
+Shifts.belongsToMany(Barbers, { through: "Barbers_Shifts" });
 
 module.exports = {
   ...sequelize.models,
