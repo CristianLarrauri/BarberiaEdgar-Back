@@ -1,4 +1,4 @@
-const { Shifts } = require("../database");
+const { Barbers, Shifts, Customers } = require("../database");
 const moment = require("moment");
 const { Sequelize } = require("sequelize");
 
@@ -6,6 +6,9 @@ const createShifts = async (req, res) => {
   try {
     // Obtener la fecha actual
     const today = moment().startOf("day");
+
+    // Obtener todos los barberos de la base de datos
+    const barbers = await Barbers.findAll();
 
     // Crear turnos para los próximos 14 días
     for (let i = 0; i < 14; i++) {
@@ -19,7 +22,8 @@ const createShifts = async (req, res) => {
         const occupied = date.day() === 0;
 
         // Crear el turno en la base de datos
-        await Shifts.create({ date, time, occupied });
+        const shift = await Shifts.create({ date, time, occupied });
+        await shift.addBarbers(barbers);
       }
     }
 
