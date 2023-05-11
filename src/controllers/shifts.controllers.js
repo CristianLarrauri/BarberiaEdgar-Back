@@ -55,13 +55,13 @@ const getShiftsId = async (req, res) => {
 
 const editShifts = async (req, res) => {
   try {
-    let shifts = await Shifts.update(
+    await Shifts.update(
       { occupied: Sequelize.literal("NOT occupied") },
       {
         where: { id: req.params.id },
       }
     );
-    return res.status(200).send(shifts);
+    return res.status(200).send("OK");
   } catch (error) {
     console.error("Error in editShifts", error);
   }
@@ -71,6 +71,8 @@ const editShifts = async (req, res) => {
 
 const deleteShifts = async (req, res) => {
   try {
+    await Shifts.destroy({ where: { id: req.params.id } });
+    return res.status(200).send("OK");
   } catch (error) {
     console.error("Error in deleteShifts", error);
   }

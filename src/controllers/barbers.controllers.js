@@ -42,7 +42,7 @@ const getBarbersId = async (req, res) => {
 
 const editBarbers = async (req, res) => {
   try {
-    let barbers = await Barbers.update(
+    await Barbers.update(
       { name: req.body.name },
       { where: { id: req.params.id } }
     );
@@ -56,7 +56,7 @@ const editBarbers = async (req, res) => {
 
 const deleteBarbers = async (req, res) => {
   try {
-    let barbers = await Barbers.destroy({ where: { id: req.params.id } });
+    await Barbers.destroy({ where: { id: req.params.id } });
     return res.status(200).send("OK");
   } catch (error) {
     console.error("Error in deleteBarbers", error);
