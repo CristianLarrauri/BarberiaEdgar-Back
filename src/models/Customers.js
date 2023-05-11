@@ -8,7 +8,14 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      Phone: {
+      surname: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      nickname: {
+        type: DataTypes.STRING,
+      },
+      phone: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
