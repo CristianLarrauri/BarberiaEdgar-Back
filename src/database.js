@@ -45,6 +45,9 @@ const { Customers, Barbers, Shifts } = sequelize.models;
 Customers.belongsToMany(Shifts, { through: "Customers_Shifts" });
 Shifts.belongsToMany(Customers, { through: "Customers_Shifts" });
 
+Customers.belongsToMany(Barbers, { through: "Customers_Barbers" });
+Barbers.belongsToMany(Customers, { through: "Customers_Barbers" });
+
 Barbers.belongsToMany(Shifts, { through: "Barbers_Shifts" });
 Shifts.belongsToMany(Barbers, { through: "Barbers_Shifts" });
 
@@ -52,3 +55,7 @@ module.exports = {
   ...sequelize.models,
   conn: sequelize,
 };
+
+
+// para no tener que hacer tres tablas de turnos (una por cada barbero), se puede hacer la relacion del cliente con la tabla intermedia, de esta manera quedaria relacionado el id del cliente (1-pini) con el id del barbero (1- edgar) y el id del turno(1-lunes 10am).
+// para no tener problemas con el id de los turnos ya que van a ser muchos usar UUID
