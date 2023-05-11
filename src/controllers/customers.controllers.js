@@ -35,6 +35,12 @@ const getCustomers = async (req, res) => {
         through: {
           attributes: [],
         },
+        include: {
+          model: Barbers,
+          through: {
+            attributes: [],
+          },
+        },
       },
     });
     return res.status(200).send(customers);
