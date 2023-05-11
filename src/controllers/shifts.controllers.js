@@ -43,6 +43,8 @@ const getShifts = async (req, res) => {
 
 const getShiftsId = async (req, res) => {
   try {
+    let shifts = await Shifts.findByPk(req.params.id);
+    return res.status(200).send(shifts);
   } catch (error) {
     console.error("Error in getShiftsId", error);
   }
