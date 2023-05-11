@@ -1,4 +1,4 @@
-const { Barbers } = require("../database");
+const { Barbers, Shifts, Customers } = require("../database");
 
 //_____________________________________________________________
 
@@ -20,7 +20,20 @@ const createBarbers = async (req, res) => {
 
 const getBarbers = async (req, res) => {
   try {
-    let barbers = await Barbers.findAll();
+    let barbers = await Barbers.findAll({
+      include: {
+        model: Shifts,
+        through: {
+          attributes: [],
+        },
+        include: {
+          model: Customers,
+          through: {
+            attributes: [],
+          },
+        },
+      },
+    });
     return res.status(200).send(barbers);
   } catch (error) {
     console.error("Error in getBarbers", error);
