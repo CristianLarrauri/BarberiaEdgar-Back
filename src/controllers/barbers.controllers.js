@@ -31,6 +31,8 @@ const getBarbers = async (req, res) => {
 
 const getBarbersId = async (req, res) => {
   try {
+    let barbers = await Barbers.findByPk(req.params.id);
+    return res.status(200).send(barbers);
   } catch (error) {
     console.error("Error in getBarbersId", error);
   }
