@@ -1,5 +1,6 @@
 const { Shifts } = require("../database");
 const moment = require("moment");
+const { Sequelize } = require("sequelize");
 
 const createShifts = async (req, res) => {
   try {
@@ -54,6 +55,13 @@ const getShiftsId = async (req, res) => {
 
 const editShifts = async (req, res) => {
   try {
+    let shifts = await Shifts.update(
+      { occupied: Sequelize.literal("NOT occupied") },
+      {
+        where: { id: req.params.id },
+      }
+    );
+    return res.status(200).send(shifts);
   } catch (error) {
     console.error("Error in editShifts", error);
   }
