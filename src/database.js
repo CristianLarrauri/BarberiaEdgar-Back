@@ -56,6 +56,4 @@ module.exports = {
   conn: sequelize,
 };
 
-
 // para no tener que hacer tres tablas de turnos (una por cada barbero), se puede hacer la relacion del cliente con la tabla intermedia, de esta manera quedaria relacionado el id del cliente (1-pini) con el id del barbero (1- edgar) y el id del turno(1-lunes 10am).
-// para no tener problemas con el id de los turnos ya que van a ser muchos usar UUID
