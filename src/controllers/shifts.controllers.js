@@ -15,8 +15,9 @@ const createShifts = async (req, res) => {
       const date = today.clone().add(i, "days");
 
       // Generar turnos cada hora desde las 10:00 hasta las 20:00
-      for (let j = 10; j <= 20; j++) {
-        const time = moment({ hour: j }).format("HH:mm");
+      let turno = moment({ hour: 9 });
+      for (let j = 0; j <= 17; j++) {
+        const time = turno.format("HH:mm");
 
         // Establecer el valor de "occupied" en verdadero si es domingo
         const occupied = date.day() === 0;
@@ -24,6 +25,8 @@ const createShifts = async (req, res) => {
         // Crear el turno en la base de datos
         const shift = await Shifts.create({ date, time, occupied });
         await shift.addBarbers(barbers);
+
+        turno.add(45, "minutes");
       }
     }
 
