@@ -22,9 +22,16 @@ const createShifts = async (req, res) => {
         // Establecer el valor de "occupied" en verdadero si es domingo
         const occupied = date.day() === 0;
 
-        // Crear el turno en la base de datos
-        const shift = await Shifts.create({ date, time, occupied });
-        await shift.addBarbers(barbers);
+        // Buscar o crear el turno en la base de datos
+        const [shift, created] = await Shifts.findOrCreate({
+          where: { date, time },
+          defaults: { occupied },
+        });
+        
+        // Asociar los barberos al turno
+        if (created) {
+          await shift.addBarbers(barbers);
+        }
 
         turno.add(45, "minutes");
       }
@@ -35,6 +42,7 @@ const createShifts = async (req, res) => {
     console.error("Error in createShifts", error);
   }
 };
+
 
 //_____________________________________________________________
 
