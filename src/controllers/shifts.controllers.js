@@ -11,7 +11,7 @@ const createShifts = async (req, res) => {
     const barbers = await Barbers.findAll();
 
     // Crear turnos para los próximos 14 días
-    for (let i = 0; i < 14; i++) {
+    for (let i = 0; i < 28; i++) {
       const date = today.clone().add(i, "days");
 
       // Generar turnos cada hora desde las 10:00 hasta las 20:00
@@ -27,7 +27,7 @@ const createShifts = async (req, res) => {
           where: { date, time },
           defaults: { occupied },
         });
-        
+
         // Asociar los barberos al turno
         if (created) {
           await shift.addBarbers(barbers);
@@ -43,12 +43,28 @@ const createShifts = async (req, res) => {
   }
 };
 
-
 //_____________________________________________________________
 
 const getShifts = async (req, res) => {
   try {
-    let shifts = await Shifts.findAll();
+    let shifts = await Shifts.findAll({
+      order: [
+        ["date", "ASC"],
+        ["time", "ASC"],
+      ],
+      include: {
+        model: Barbers,
+        through: {
+          attributes: [],
+        },
+      },
+      include: {
+        model: Customers,
+        through: {
+          attributes: [],
+        },
+      },
+    });
     return res.status(200).send(shifts);
   } catch (error) {
     console.error("Error in getShifts", error);
