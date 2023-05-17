@@ -21,6 +21,7 @@ const createBarbers = async (req, res) => {
 const getBarbers = async (req, res) => {
   try {
     let barbers = await Barbers.findAll({
+      order: [["name", "ASC"]],
       include: {
         model: Shifts,
         through: {
