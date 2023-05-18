@@ -5,7 +5,7 @@ const {
   editBarbersShifts,
   deleteBarbersShifts,
   getBarbersShiftsId,
-} = require("../controllers/barbers.controllers");
+} = require("../controllers/barbersShifts.controllers");
 
 const router = Router();
 

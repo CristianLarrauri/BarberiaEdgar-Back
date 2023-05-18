@@ -4,31 +4,28 @@ const { Sequelize } = require("sequelize");
 
 const createShifts = async (req, res) => {
   try {
+    const barbers = await Barbers.findAll();
+
     // Obtener la fecha actual
     const today = moment().startOf("day");
 
-    // Obtener todos los barberos de la base de datos
-    const barbers = await Barbers.findAll();
-
-    // Crear turnos para los próximos 14 días
-    for (let i = 0; i < 28; i++) {
+    // Crear turnos para los próximos 14 días, excepto dia Domingo
+    for (let i = 0; i < 14; i++) {
       const date = today.clone().add(i, "days");
+      if (date.day() === 0) continue;
 
-      // Generar turnos cada hora desde las 10:00 hasta las 20:00
+      // Generar turnos cada 45 min desde las 9:00 hasta las 21:00
       let turno = moment({ hour: 9 });
-      for (let j = 0; j <= 17; j++) {
+      for (let j = 0; j <= 16; j++) {
         const time = turno.format("HH:mm");
-
-        // Establecer el valor de "occupied" en verdadero si es domingo
-        const occupied = date.day() === 0;
+        const dateTime = moment(date).hour(turno.hour()).minute(turno.minute());
 
         // Buscar o crear el turno en la base de datos
         const [shift, created] = await Shifts.findOrCreate({
-          where: { date, time },
-          defaults: { occupied },
+          where: { dateTime, date, time },
         });
 
-        // Asociar los barberos al turno
+        // Si creo asociar los barberos al turno
         if (created) {
           await shift.addBarbers(barbers);
         }
