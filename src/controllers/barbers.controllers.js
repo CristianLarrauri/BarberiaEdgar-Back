@@ -26,7 +26,11 @@ const createBarbers = async (req, res) => {
 
 const getBarbers = async (req, res) => {
   try {
-    let barbers = await Barbers.findAll();
+    let barbers = await Barbers.findAll({
+      include: {
+        model: Shifts,
+      },
+    });
     return res.status(200).send(barbers);
   } catch (error) {
     console.error("Error in getBarbers", error);
