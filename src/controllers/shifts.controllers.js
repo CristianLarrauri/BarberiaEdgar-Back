@@ -5,42 +5,42 @@ const { Sequelize } = require("sequelize");
 const createShifts = async (req, res) => {
   try {
     const barbers = await Barbers.findAll();
+    const daysOfWeek = [
+      "Lunes",
+      "Martes",
+      "Miercoles",
+      "Jueves",
+      "Viernes",
+      "Sabado",
+    ];
+
+    const today = moment().startOf("day");
+    const futureDates = Array.from({ length: 14 }, (_, i) =>
+      today.clone().add(i, "days")
+    );
 
     for (const barber of barbers) {
-      // Obtener la fecha actual
-      const today = moment().startOf("day");
-
-      // Crear turnos para los próximos 14 días, excepto dia Domingo
-      for (let i = 0; i < 14; i++) {
-        const date = today.clone().add(i, "days");
-        let dayShift = "";
+      for (const date of futureDates) {
         if (date.day() === 0) continue;
-        if (date.day() === 1) dayShift = "Lunes";
-        if (date.day() === 2) dayShift = "Martes";
-        if (date.day() === 3) dayShift = "Miercoles";
-        if (date.day() === 4) dayShift = "Jueves";
-        if (date.day() === 5) dayShift = "Viernes";
-        if (date.day() === 6) dayShift = "Sabado";
 
-        // Generar turnos cada 45 min desde las 9:00 hasta las 21:00
-        let turno = moment({ hour: 9 });
-        for (let j = 0; j <= 16; j++) {
-          const time = turno.format("HH:mm");
+        const dayShift = daysOfWeek[date.day() - 1];
+        const startTime = moment({ hour: 9 });
+
+        for (let i = 0; i <= 16; i++) {
+          const time = startTime.format("HH:mm");
           const dateTime = moment(date)
-            .hour(turno.hour())
-            .minute(turno.minute());
+            .hour(startTime.hour())
+            .minute(startTime.minute());
 
-          // Buscar o crear el turno en la base de datos
           const [shift, created] = await Shifts.findOrCreate({
             where: { dateTime, date, time, day: dayShift, barber: barber.name },
           });
 
-          // Si creo asociar los barberos al turno
           if (created) {
             await shift.addBarbers(barber);
           }
 
-          turno.add(45, "minutes");
+          startTime.add(45, "minutes");
         }
       }
     }
