@@ -18,11 +18,6 @@ module.exports = (sequelize) => {
         type: DataTypes.TIME,
         allowNull: false,
       },
-      occupied: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: false,
-      },
     },
     {
       timestamps: false,
