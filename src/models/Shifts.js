@@ -28,6 +28,11 @@ module.exports = (sequelize) => {
       barber: {
         type: DataTypes.STRING,
       },
+      occupied: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      },
     },
     {
       timestamps: false,

@@ -39,23 +39,18 @@ let capsEntries = entries.map((entry) => [
 sequelize.models = Object.fromEntries(capsEntries);
 
 // Importar tablas:
-const { Customers, Barbers, Shifts, Barbers_Shifts } = sequelize.models;
+const { Customers, Barbers, Shifts } = sequelize.models;
 
 // Relaciones:
-// Customers.belongsToMany(Shifts, { through: "Customers_Shifts" });
-// Shifts.belongsToMany(Customers, { through: "Customers_Shifts" });
 
-Barbers.belongsToMany(Shifts, { through: Barbers_Shifts });
-Shifts.belongsToMany(Barbers, { through: Barbers_Shifts });
+Barbers.belongsToMany(Shifts, { through: "Barbers_Shifts" });
+Shifts.belongsToMany(Barbers, { through: "Barbers_Shifts" });
 
-// Customers.hasMany(Barbers_Shifts);
-// Barbers_Shifts.belongsTo(Customers);
-
-Barbers_Shifts.belongsToMany(Customers, {
-  through: "Barbers_Shifts_Customers",
+Customers.belongsToMany(Shifts, {
+  through: "Customers_Shifts",
 });
-Customers.belongsToMany(Barbers_Shifts, {
-  through: "Barbers_Shifts_Customers",
+Shifts.belongsToMany(Customers, {
+  through: "Customers_Shifts",
 });
 
 module.exports = {
