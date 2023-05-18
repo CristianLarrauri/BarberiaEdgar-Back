@@ -5,9 +5,9 @@ module.exports = (sequelize) => {
     "Barbers_Shifts",
     {
       id: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
+        type: DataTypes.INTEGER,
         primaryKey: true,
+        autoIncrement: true,
       },
       occupied: {
         type: DataTypes.BOOLEAN,

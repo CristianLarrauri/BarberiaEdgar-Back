@@ -4,9 +4,8 @@ module.exports = (sequelize) => {
   sequelize.define(
     "Shifts",
     {
-      id: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
+      dateTime: {
+        type: DataTypes.DATE,
         allowNull: false,
         primaryKey: true,
       },
