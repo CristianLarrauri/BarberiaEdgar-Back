@@ -47,24 +47,7 @@ const createShifts = async (req, res) => {
 
 const getShifts = async (req, res) => {
   try {
-    let shifts = await Shifts.findAll({
-      order: [
-        ["date", "ASC"],
-        ["time", "ASC"],
-      ],
-      include: {
-        model: Barbers,
-        through: {
-          attributes: [],
-        },
-      },
-      include: {
-        model: Customers,
-        through: {
-          attributes: [],
-        },
-      },
-    });
+    let shifts = await Shifts.findAll();
     return res.status(200).send(shifts);
   } catch (error) {
     console.error("Error in getShifts", error);

@@ -1,10 +1,10 @@
-const { Customers, Barbers, Shifts } = require("../database");
+const { Customers, Barbers, Shifts, Barbers_Shifts } = require("../database");
 
 //_____________________________________________________________
 
 const createCustomers = async (req, res) => {
   try {
-    let { name, surname, nickname, phone, service, barber, shift } = req.body;
+    let { name, surname, nickname, phone, service, shift } = req.body;
 
     let newCustomer = await Customers.create({
       name: name.charAt(0).toUpperCase() + name.slice(1),
@@ -14,11 +14,9 @@ const createCustomers = async (req, res) => {
       service: service.charAt(0).toUpperCase() + service.slice(1),
     });
 
-    let barberOfCustomers = await Barbers.findByPk(barber);
-    let shiftOfCustomers = await Shifts.findByPk(shift);
+    let shiftOfCustomers = await Barbers_Shifts.findByPk(shift);
 
-    await newCustomer.addBarbers(barberOfCustomers);
-    await newCustomer.addShifts(shiftOfCustomers);
+    await newCustomer.addBarbers_Shifts(shiftOfCustomers);
 
     return res.status(200).send(newCustomer);
   } catch (error) {
@@ -32,15 +30,9 @@ const getCustomers = async (req, res) => {
   try {
     let customers = await Customers.findAll({
       include: {
-        model: Shifts,
+        model: Barbers_Shifts,
         through: {
           attributes: [],
-        },
-        include: {
-          model: Barbers,
-          through: {
-            attributes: [],
-          },
         },
       },
     });
