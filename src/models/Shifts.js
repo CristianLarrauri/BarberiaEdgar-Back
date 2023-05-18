@@ -1,13 +1,21 @@
-const { DataTypes } = require("sequelize");
+const { DataTypes, UUIDV4 } = require("sequelize");
 
 module.exports = (sequelize) => {
   sequelize.define(
     "Shifts",
     {
+      id: {
+        type: DataTypes.UUID,
+        defaultValue: UUIDV4,
+        allowNull: false,
+        primaryKey: true,
+      },
       dateTime: {
         type: DataTypes.DATE,
         allowNull: false,
-        primaryKey: true,
+      },
+      day: {
+        type: DataTypes.STRING,
       },
       date: {
         type: DataTypes.DATEONLY,
@@ -16,6 +24,9 @@ module.exports = (sequelize) => {
       time: {
         type: DataTypes.TIME,
         allowNull: false,
+      },
+      barber: {
+        type: DataTypes.STRING,
       },
     },
     {
