@@ -41,7 +41,19 @@ const getBarbers = async (req, res) => {
 
 const getBarbersId = async (req, res) => {
   try {
-    let barbers = await Barbers.findByPk(req.params.id);
+    let barbers = await Barbers.findByPk(req.params.id, {
+      include: {
+        model: Shifts,
+        where: {
+          occupied: false,
+          date: req.query.date,
+        },
+        order: [
+          ["date", "ASC"],
+          ["time", "ASC"],
+        ],
+      },
+    });
     return res.status(200).send(barbers);
   } catch (error) {
     console.error("Error in getBarbersId", error);
