@@ -4,19 +4,21 @@ const { Customers, Barbers, Shifts, Barbers_Shifts } = require("../database");
 
 const createCustomers = async (req, res) => {
   try {
-    let { name, surname, nickname, phone, service, shift } = req.body;
+    console.log(req.body);
+    let { firstName, lastName, nickname, phoneNumber, services, shiftId } =
+      req.body;
 
     let newCustomer = await Customers.create({
-      name: name.charAt(0).toUpperCase() + name.slice(1),
-      surname: surname.charAt(0).toUpperCase() + surname.slice(1),
+      firstName: firstName.charAt(0).toUpperCase() + firstName.slice(1),
+      lastName: lastName.charAt(0).toUpperCase() + lastName.slice(1),
       nickname: nickname.charAt(0).toUpperCase() + nickname.slice(1),
-      phone,
-      service: service.charAt(0).toUpperCase() + service.slice(1),
+      phoneNumber,
+      services: services.charAt(0).toUpperCase() + services.slice(1),
     });
 
-    let shiftOfCustomers = await Barbers_Shifts.findByPk(shift);
+    let shiftOfCustomers = await Shifts.findByPk(shiftId);
 
-    await newCustomer.addBarbers_Shifts(shiftOfCustomers);
+    await newCustomer.addShifts(shiftOfCustomers);
 
     return res.status(200).send(newCustomer);
   } catch (error) {
