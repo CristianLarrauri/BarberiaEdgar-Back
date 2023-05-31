@@ -15,7 +15,7 @@ const createShifts = async (req, res) => {
     ];
 
     const today = moment().startOf("day");
-    const futureDates = Array.from({ length: 14 }, (_, i) =>
+    const futureDates = Array.from({ length: 15 }, (_, i) =>
       today.clone().add(i, "days")
     );
 
@@ -87,7 +87,7 @@ const getShiftsId = async (req, res) => {
 const editShifts = async (req, res) => {
   try {
     await Shifts.update(
-      { occupied: Sequelize.literal("NOT occupied") },
+      { occupied: true },
       {
         where: { id: req.params.id },
       }
