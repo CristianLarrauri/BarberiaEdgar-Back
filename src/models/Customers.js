@@ -4,22 +4,22 @@ module.exports = (sequelize) => {
   sequelize.define(
     "Customers",
     {
-      name: {
+      firstName: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      surname: {
+      lastName: {
         type: DataTypes.STRING,
         allowNull: false,
       },
       nickname: {
         type: DataTypes.STRING,
       },
-      phone: {
+      phoneNumber: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      service: {
+      services: {
         type: DataTypes.STRING,
         allowNull: false,
       },
