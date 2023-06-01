@@ -39,10 +39,15 @@ const createCustomers = async (req, res) => {
 const getCustomers = async (req, res) => {
   try {
     let customers = await Customers.findAll({
+      where: { user: req.query.user },
       include: {
-        model: Barbers_Shifts,
-        through: {
-          attributes: [],
+        model: Shifts,
+        order: [
+          ["date", "ASC"],
+          ["time", "ASC"],
+        ],
+        include: {
+          model: Barbers,
         },
       },
     });
