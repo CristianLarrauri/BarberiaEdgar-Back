@@ -63,6 +63,7 @@ const getShifts = async (req, res) => {
       ],
       include: {
         model: Barbers,
+        model: Customers,
       },
     });
     return res.status(200).send(shifts);
