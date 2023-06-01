@@ -45,13 +45,15 @@ const getBarbersId = async (req, res) => {
       include: {
         model: Shifts,
         where: {
-          occupied: false,
           date: req.query.date,
         },
         order: [
           ["date", "ASC"],
           ["time", "ASC"],
         ],
+        include: {
+          model: Customers,
+        },
       },
     });
     return res.status(200).send(barbers);
