@@ -5,8 +5,15 @@ const { Customers, Barbers, Shifts, Barbers_Shifts } = require("../database");
 const createCustomers = async (req, res) => {
   try {
     console.log(req.body);
-    let { firstName, lastName, nickname, phoneNumber, services, shiftId } =
-      req.body;
+    let {
+      firstName,
+      lastName,
+      nickname,
+      phoneNumber,
+      services,
+      user,
+      shiftId,
+    } = req.body;
 
     let newCustomer = await Customers.create({
       firstName: firstName.charAt(0).toUpperCase() + firstName.slice(1),
@@ -14,6 +21,7 @@ const createCustomers = async (req, res) => {
       nickname: nickname.charAt(0).toUpperCase() + nickname.slice(1),
       phoneNumber,
       services: services.charAt(0).toUpperCase() + services.slice(1),
+      user,
     });
 
     let shiftOfCustomers = await Shifts.findByPk(shiftId);
