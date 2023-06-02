@@ -1,6 +1,5 @@
 const { Barbers, Shifts, Customers } = require("../database");
 const moment = require("moment");
-const { Sequelize } = require("sequelize");
 
 const createShifts = async (req, res) => {
   try {
@@ -73,6 +72,7 @@ const getShifts = async (req, res) => {
 };
 
 //_____________________________________________________________
+// probablemente no se use
 
 const getShiftsId = async (req, res) => {
   try {
@@ -84,15 +84,13 @@ const getShiftsId = async (req, res) => {
 };
 
 //_____________________________________________________________
+//Se usa para cambiar turnos en true o false
 
 const editShifts = async (req, res) => {
   try {
-    await Shifts.update(
-      { occupied: true },
-      {
-        where: { id: req.params.id },
-      }
-    );
+    const shift = await Shifts.findOne({ where: { id: req.params.id } });
+    const newOccupied = !shift.occupied;
+    await shift.update({ occupied: newOccupied });
     return res.status(200).send("OK");
   } catch (error) {
     console.error("Error in editShifts", error);
@@ -100,6 +98,7 @@ const editShifts = async (req, res) => {
 };
 
 //_____________________________________________________________
+//usar para eliminar viejos turnos(dias pasados)?
 
 const deleteShifts = async (req, res) => {
   try {
