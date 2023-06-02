@@ -67,6 +67,7 @@ const getBarbersId = async (req, res) => {
 };
 
 //_____________________________________________________________
+//usar para editar un barbero? O solo usaremos agregar o eliminar?
 
 const editBarbers = async (req, res) => {
   try {
@@ -81,6 +82,7 @@ const editBarbers = async (req, res) => {
 };
 
 //_____________________________________________________________
+// usar para eliminar un barbero
 
 const deleteBarbers = async (req, res) => {
   try {

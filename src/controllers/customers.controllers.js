@@ -69,6 +69,7 @@ const getCustomersId = async (req, res) => {
 };
 
 //_____________________________________________________________
+// usar para editar un turno? O solo crear y eliminar?
 
 const editCustomers = async (req, res) => {
   try {
@@ -80,6 +81,7 @@ const editCustomers = async (req, res) => {
 };
 
 //_____________________________________________________________
+// usar para eliminar un turno?
 
 const deleteCustomers = async (req, res) => {
   try {
