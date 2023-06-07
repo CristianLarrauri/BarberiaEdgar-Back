@@ -1,6 +1,5 @@
 const server = require("./app.js");
 const { createBarbers } = require("./controllers/barbers.controllers.js");
-const { createShifts } = require("./controllers/shifts.controllers.js");
 const { conn } = require("./database.js");
 require("dotenv").config();
 
@@ -11,7 +10,6 @@ conn.sync({ force: true }).then(() => {
     await createBarbers({ body: { name: "Edgar" } });
     await createBarbers({ body: { name: "Jere" } });
     await createBarbers({ body: { name: "Adriano" } });
-    await createShifts();
     console.log(`Server listening on port: ${port}`);
   });
 });
