@@ -39,6 +39,7 @@ const createCustomers = async (req, res) => {
 const getCustomers = async (req, res) => {
   try {
     let customers = await Customers.findAll({
+      where: { user: req.query.user },
       include: {
         model: Shifts,
         order: [
