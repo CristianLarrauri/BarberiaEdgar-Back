@@ -1,4 +1,5 @@
 const { Barbers, Shifts, Customers } = require("../database");
+const { Op } = require("sequelize");
 const moment = require("moment");
 
 const createShifts = async (req, res) => {
@@ -102,7 +103,24 @@ const editShifts = async (req, res) => {
 
 const deleteShifts = async (req, res) => {
   try {
-    await Shifts.destroy({ where: { id: req.params.id } });
+    const currentDate = moment();
+    const shifts = await Shifts.findAll();
+
+    const expiredShifts = shifts.filter((shift) => {
+      const shiftDate = moment(shift.date);
+      return shiftDate.isBefore(currentDate, "day");
+    });
+
+    if (expiredShifts.length > 0) {
+      await Shifts.destroy({
+        where: {
+          id: {
+            [Op.in]: expiredShifts.map((shift) => shift.id),
+          },
+        },
+      });
+    }
+
     return res.status(200).send("OK");
   } catch (error) {
     console.error("Error in deleteShifts", error);
