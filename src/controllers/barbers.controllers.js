@@ -5,7 +5,7 @@ const {
   Customers,
   Barbers_Shifts_Customers,
 } = require("../database");
-const { createShifts } = require("./shifts.controllers");
+const { createShifts, deleteShifts } = require("./shifts.controllers");
 
 //_____________________________________________________________
 
@@ -28,6 +28,7 @@ const createBarbers = async (req, res) => {
 const getBarbers = async (req, res) => {
   try {
     await createShifts();
+    await deleteShifts();
 
     let barbers = await Barbers.findAll({
       include: {
