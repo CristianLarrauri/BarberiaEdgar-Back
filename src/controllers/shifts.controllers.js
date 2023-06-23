@@ -105,12 +105,18 @@ const editShifts = async (req, res) => {
 const disableShifts = async (req, res) => {
   try {
     const currentDateTime = moment();
+    const timeZone = "America/Argentina/Buenos_Aires";
+    const argentinaDateTime = currentDateTime.tz(timeZone);
+
     const shifts = await Shifts.findAll();
-    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", currentDateTime);
+    console.log(
+      "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+      argentinaDateTime
+    );
 
     const expiredShifts = shifts.filter((shift) => {
       const shiftDateTime = moment(shift.dateTime);
-      return shiftDateTime.isBefore(currentDateTime);
+      return shiftDateTime.isBefore(argentinaDateTime);
     });
 
     if (expiredShifts.length > 0) {
