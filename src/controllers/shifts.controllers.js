@@ -109,7 +109,8 @@ const disableShifts = async (req, res) => {
     const shifts = await Shifts.findAll();
 
     const expiredShifts = shifts.filter((shift) => {
-      const shiftDateTime = moment(shift.dateTime).tz(
+      const shiftDateTime = moment.tz(
+        shift.dateTime,
         "America/Argentina/Buenos_Aires"
       );
       return shiftDateTime.isBefore(currentDateTime);
