@@ -115,7 +115,7 @@ const disableShifts = async (req, res) => {
     );
 
     const expiredShifts = shifts.filter((shift) => {
-      const shiftDateTime = moment(shift.dateTime);
+      const shiftDateTime = shift.dateTime;
       return shiftDateTime.isBefore(argentinaDateTime);
     });
 
