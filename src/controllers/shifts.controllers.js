@@ -105,12 +105,14 @@ const editShifts = async (req, res) => {
 const disableShifts = async (req, res) => {
   try {
     const currentDateTime = moment();
+    console.log(currentDateTime);
     const shifts = await Shifts.findAll();
 
     const expiredShifts = shifts.filter((shift) => {
       const shiftDateTime = moment(shift.dateTime);
       return shiftDateTime.isBefore(currentDateTime);
     });
+    console.log(expiredShifts);
 
     if (expiredShifts.length > 0) {
       const shiftIds = expiredShifts.map((shift) => shift.id);
@@ -126,12 +128,9 @@ const disableShifts = async (req, res) => {
       );
     }
 
-    console.log(currentDateTime);
-    console.log(shiftDateTime);
-
-    return res.status(200).send("OK");
+    return
   } catch (error) {
-    console.error("Error in editShifts", error);
+    console.error("Error in disableShifts", error);
   }
 };
 
