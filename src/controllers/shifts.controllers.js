@@ -1,6 +1,7 @@
 const { Barbers, Shifts, Customers } = require("../database");
 const { Op } = require("sequelize");
 const moment = require("moment");
+require("moment-timezone");
 
 const createShifts = async (req, res) => {
   try {
@@ -103,12 +104,14 @@ const editShifts = async (req, res) => {
 
 const disableShifts = async (req, res) => {
   try {
-    const currentDateTime = moment();
+    const currentDateTime = moment().tz("America/Argentina/Buenos_Aires");
     console.log(currentDateTime);
     const shifts = await Shifts.findAll();
 
     const expiredShifts = shifts.filter((shift) => {
-      const shiftDateTime = moment(shift.dateTime);
+      const shiftDateTime = moment(shift.dateTime).tz(
+        "America/Argentina/Buenos_Aires"
+      );
       return shiftDateTime.isBefore(currentDateTime);
     });
 
