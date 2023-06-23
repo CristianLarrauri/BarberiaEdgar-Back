@@ -99,7 +99,39 @@ const editShifts = async (req, res) => {
 };
 
 //_____________________________________________________________
-//usar para eliminar viejos turnos(dias pasados)?
+//Se usa para desabilitar los turnos del dia que ya pasaron
+const disableShifts = async (req, res) => {
+  try {
+    const currentDateTime = moment();
+    const shifts = await Shifts.findAll();
+
+    const expiredShifts = shifts.filter((shift) => {
+      const shiftDateTime = moment(shift.dateTime);
+      return shiftDateTime.isBefore(currentDateTime);
+    });
+
+    if (expiredShifts.length > 0) {
+      const shiftIds = expiredShifts.map((shift) => shift.id);
+      await Shifts.update(
+        { occupied: true },
+        {
+          where: {
+            id: {
+              [Op.in]: shiftIds,
+            },
+          },
+        }
+      );
+    }
+
+    return res.status(200).send("OK");
+  } catch (error) {
+    console.error("Error in editShifts", error);
+  }
+};
+
+//_____________________________________________________________
+//Elimina viejos turnos(dias pasados)
 
 const deleteShifts = async (req, res) => {
   try {
@@ -132,5 +164,6 @@ module.exports = {
   getShifts,
   getShiftsId,
   editShifts,
+  disableShifts,
   deleteShifts,
 };
