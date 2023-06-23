@@ -1,6 +1,7 @@
 const { Barbers, Shifts, Customers } = require("../database");
 const { Op } = require("sequelize");
 const moment = require("moment");
+require("moment-timezone");
 
 const createShifts = async (req, res) => {
   try {
@@ -102,11 +103,13 @@ const editShifts = async (req, res) => {
 //Se usa para desabilitar los turnos del dia que ya pasaron
 const disableShifts = async (req, res) => {
   try {
-    const currentDateTime = moment();
+    const currentDateTime = moment().tz("America/Argentina/Buenos_Aires");
     const shifts = await Shifts.findAll();
 
     const expiredShifts = shifts.filter((shift) => {
-      const shiftDateTime = moment(shift.dateTime);
+      const shiftDateTime = moment(shift.dateTime).tz(
+        "America/Argentina/Buenos_Aires"
+      );
       return shiftDateTime.isBefore(currentDateTime);
     });
 
@@ -126,10 +129,9 @@ const disableShifts = async (req, res) => {
 
     return res.status(200).send("OK");
   } catch (error) {
-    console.error("Error in editShifts", error);
+    console.error("Error in disableShifts", error);
   }
 };
-
 //_____________________________________________________________
 //Elimina viejos turnos(dias pasados)
 
