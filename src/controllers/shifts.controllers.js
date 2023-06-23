@@ -106,15 +106,18 @@ const disableShifts = async (req, res) => {
   try {
     const currentDateTime = moment().tz("America/Argentina/Buenos_Aires");
     console.log(currentDateTime);
-    const shifts = await Shifts.findAll();
 
-    const expiredShifts = shifts.filter((shift) => {
-      const shiftDateTime = shift.dateTime;
-      return shiftDateTime.isBefore(currentDateTime);
+    // Asegúrate de tener acceso al modelo Shifts y reemplaza "Shifts" con el nombre correcto de tu modelo
+    const shifts = await Shifts.findAll({
+      where: {
+        dateTime: {
+          [Op.lt]: currentDateTime.toDate(),
+        },
+      },
     });
 
-    if (expiredShifts.length > 0) {
-      const shiftIds = expiredShifts.map((shift) => shift.id);
+    if (shifts.length > 0) {
+      const shiftIds = shifts.map((shift) => shift.id);
       await Shifts.update(
         { occupied: true },
         {
@@ -130,6 +133,7 @@ const disableShifts = async (req, res) => {
     return res.status(200).send("OK");
   } catch (error) {
     console.error("Error in disableShifts", error);
+    return res.status(500).send("Internal Server Error");
   }
 };
 
