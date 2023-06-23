@@ -126,6 +126,9 @@ const disableShifts = async (req, res) => {
       );
     }
 
+    console.log(currentDateTime);
+    console.log(shiftDateTime);
+
     return res.status(200).send("OK");
   } catch (error) {
     console.error("Error in editShifts", error);
