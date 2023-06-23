@@ -104,20 +104,21 @@ const editShifts = async (req, res) => {
 
 const disableShifts = async (req, res) => {
   try {
-    const currentDateTime = moment().tz("America/Argentina/Buenos_Aires");
+    const currentDateTime = moment()
+      .tz("America/Argentina/Buenos_Aires")
+      .startOf("day");
     console.log(currentDateTime);
     const shifts = await Shifts.findAll();
 
-    const expiredShifts = shifts.filter((shift) => {
-      const shiftDateTime = moment.tz(
-        shift.dateTime,
+    const todayShifts = shifts.filter((shift) => {
+      const shiftDateTime = moment(shift.dateTime).tz(
         "America/Argentina/Buenos_Aires"
       );
-      return shiftDateTime.isBefore(currentDateTime);
+      return shiftDateTime.isSame(currentDateTime, "day");
     });
 
-    if (expiredShifts.length > 0) {
-      const shiftIds = expiredShifts.map((shift) => shift.id);
+    if (todayShifts.length > 0) {
+      const shiftIds = todayShifts.map((shift) => shift.id);
       await Shifts.update(
         { occupied: true },
         {
