@@ -121,6 +121,7 @@ const disableShifts = async (req, res) => {
 
     if (expiredShifts.length > 0) {
       const shiftIds = expiredShifts.map((shift) => shift.id);
+      console.log(shiftIds);
       await Shifts.update(
         { occupied: true },
         {
