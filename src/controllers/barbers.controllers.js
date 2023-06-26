@@ -91,11 +91,11 @@ const editBarbers = async (req, res) => {
 };
 
 //_____________________________________________________________
-// usar para eliminar un barbero
+// Elimina un barbero
 
 const deleteBarbers = async (req, res) => {
   try {
-    await Barbers.destroy({ where: { id: req.params.id } });
+    await Barbers.destroy({ where: { name: req.params.id } });
     return res.status(200).send("OK");
   } catch (error) {
     console.error("Error in deleteBarbers", error);
