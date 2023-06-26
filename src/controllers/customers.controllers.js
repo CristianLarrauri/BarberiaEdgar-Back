@@ -4,7 +4,6 @@ const { Customers, Barbers, Shifts, Barbers_Shifts } = require("../database");
 
 const createCustomers = async (req, res) => {
   try {
-    console.log(req.body);
     let {
       firstName,
       lastName,

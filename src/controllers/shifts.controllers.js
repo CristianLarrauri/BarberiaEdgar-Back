@@ -113,11 +113,8 @@ const disableShifts = async (req, res) => {
 
     const expiredShifts = shifts.filter((shift) => {
       const shiftDateTime = moment(shift.dateTime);
-      console.log(shiftDateTime);
       return shiftDateTime.isBefore(argentinaDateTime);
     });
-
-    console.log(expiredShifts);
 
     if (expiredShifts.length > 0) {
       const shiftIds = expiredShifts.map((shift) => shift.id);
