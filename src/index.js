@@ -14,6 +14,11 @@ conn.sync({ force: true }).then(() => {
       for (const barber of barbersData) {
         await axios.post(`http://localhost:${port}/barbers`, barber);
       }
+
+      const servicesData = require("./services.json");
+      for (const service of servicesData) {
+        await axios.post(`http://localhost:${port}/services`, service);
+      }
       //______________________________________________________________
 
       console.log(`Server listening on port: ${port}`);
