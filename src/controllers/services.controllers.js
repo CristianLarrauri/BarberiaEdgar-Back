@@ -36,7 +36,7 @@ const getServices = async (req, res) => {
 
 //_____________________________________________________________
 
-const editService = async (req, res) => {
+const editServices = async (req, res) => {
   try {
     const { id } = req.params;
     const { name, price } = req.body;
@@ -54,13 +54,13 @@ const editService = async (req, res) => {
 
     return res.status(200).send("OK");
   } catch (error) {
-    console.error("Error in updateService", error);
+    console.error("Error in updateServices", error);
   }
 };
 
 //_____________________________________________________________
 
-const deleteService = async (req, res) => {
+const deleteServices = async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -74,13 +74,13 @@ const deleteService = async (req, res) => {
 
     return res.status(200).send("OK");
   } catch (error) {
-    console.error("Error in deleteService", error);
+    console.error("Error in deleteServices", error);
   }
 };
 
 module.exports = {
   createServices,
   getServices,
-  editService,
-  deleteService,
+  editServices,
+  deleteServices,
 };
