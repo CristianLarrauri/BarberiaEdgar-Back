@@ -37,19 +37,38 @@ const createCustomers = async (req, res) => {
 
 const getCustomers = async (req, res) => {
   try {
-    let customers = await Customers.findAll({
-      where: { user: req.query.user },
-      include: {
-        model: Shifts,
-        order: [
-          ["date", "ASC"],
-          ["time", "ASC"],
-        ],
+    const { user } = req.query;
+    let customers;
+
+    if (user) {
+      customers = await Customers.findAll({
+        where: { user: user },
         include: {
-          model: Barbers,
+          model: Shifts,
+          order: [
+            ["date", "ASC"],
+            ["time", "ASC"],
+          ],
+          include: {
+            model: Barbers,
+          },
         },
-      },
-    });
+      });
+    } else {
+      customers = await Customers.findAll({
+        include: {
+          model: Shifts,
+          order: [
+            ["date", "ASC"],
+            ["time", "ASC"],
+          ],
+          include: {
+            model: Barbers,
+          },
+        },
+      });
+    }
+
     return res.status(200).send(customers);
   } catch (error) {
     console.error("Error in getCustomers", error);
