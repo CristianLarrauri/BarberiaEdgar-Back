@@ -19,7 +19,7 @@ const createCustomers = async (req, res) => {
       lastName: lastName.charAt(0).toUpperCase() + lastName.slice(1),
       nickname: nickname.charAt(0).toUpperCase() + nickname.slice(1),
       phoneNumber,
-      services: services.charAt(0).toUpperCase() + services.slice(1),
+      services,
       user,
     });
 

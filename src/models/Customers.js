@@ -20,7 +20,7 @@ module.exports = (sequelize) => {
         allowNull: false,
       },
       services: {
-        type: DataTypes.STRING,
+        type: DataTypes.ARRAY(DataTypes.STRING),
         allowNull: false,
       },
       user: {
