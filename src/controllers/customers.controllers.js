@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const { Customers, Barbers, Shifts, Barbers_Shifts } = require("../database");
 
 //_____________________________________________________________
@@ -37,41 +38,39 @@ const createCustomers = async (req, res) => {
 
 const getCustomers = async (req, res) => {
   try {
-    const { user } = req.query;
+    const { user, searchbar } = req.query;
     let customers;
+    const whereClause = {};
 
     if (user) {
-      customers = await Customers.findAll({
-        where: { user: user },
-        include: {
-          model: Shifts,
-          order: [
-            ["date", "ASC"],
-            ["time", "ASC"],
-          ],
-          include: {
-            model: Barbers,
-          },
-        },
-      });
-    } else {
-      customers = await Customers.findAll({
-        include: {
-          model: Shifts,
-          order: [
-            ["date", "ASC"],
-            ["time", "ASC"],
-          ],
-          include: {
-            model: Barbers,
-          },
-        },
-      });
+      whereClause.user = user;
     }
+    if (searchbar) {
+      whereClause[Op.or] = {
+        firstName: { [Op.iLike]: `%${searchbar}%` },
+        lastName: { [Op.iLike]: `%${searchbar}%` },
+        nickname: { [Op.iLike]: `%${searchbar}%` },
+      };
+    }
+
+    customers = await Customers.findAll({
+      where: whereClause,
+      include: {
+        model: Shifts,
+        order: [
+          ["date", "ASC"],
+          ["time", "ASC"],
+        ],
+        include: {
+          model: Barbers,
+        },
+      },
+    });
 
     return res.status(200).send(customers);
   } catch (error) {
     console.error("Error in getCustomers", error);
+    return res.status(500).send("Error retrieving customers");
   }
 };
 
