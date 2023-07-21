@@ -39,7 +39,7 @@ let capsEntries = entries.map((entry) => [
 sequelize.models = Object.fromEntries(capsEntries);
 
 // Importar tablas:
-const { Customers, Barbers, Shifts } = sequelize.models;
+const { Customers, Barbers, Shifts, Services, Users } = sequelize.models;
 
 // Relaciones:
 
