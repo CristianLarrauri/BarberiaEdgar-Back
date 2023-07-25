@@ -24,7 +24,7 @@ const getUsers = async (req, res) => {
 
     if (email) {
       users = await Users.findAll({
-        where: { email: { [Op.iLike]: `%${email}%` } },
+        where: { email: email },
       });
     } else {
       users = await Users.findAll();
