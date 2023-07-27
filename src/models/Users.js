@@ -10,11 +10,11 @@ module.exports = (sequelize) => {
         primaryKey: true,
       },
       ban: {
-        type: DataTypes.STRING,
+        type: DataTypes.BOOLEAN,
         defaultValue: false,
       },
       admin: {
-        type: DataTypes.STRING,
+        type: DataTypes.BOOLEAN,
         defaultValue: false,
       },
     },
