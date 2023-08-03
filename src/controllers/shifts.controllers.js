@@ -100,20 +100,16 @@ const editShifts = async (req, res) => {
 };
 
 //_____________________________________________________________
-//Se usa para desabilitar los turnos del dia que ya pasaron
+//Desabilita los turnos del dia que ya pasaron
 
 const disableShifts = async (req, res) => {
   try {
-    const currentDateTime = moment();
-    const argentinaDateTime = currentDateTime.tz(
-      "America/Argentina/Buenos_Aires"
-    );
-
+    const currentDateTime = moment().utcOffset(-3); // Restar 3 horas a UTC 0
     const shifts = await Shifts.findAll();
 
     const expiredShifts = shifts.filter((shift) => {
       const shiftDateTime = moment(shift.dateTime);
-      return shiftDateTime.isBefore(argentinaDateTime);
+      return shiftDateTime.isBefore(currentDateTime);
     });
 
     if (expiredShifts.length > 0) {
@@ -137,7 +133,7 @@ const disableShifts = async (req, res) => {
 };
 
 //_____________________________________________________________
-//Elimina viejos turnos(dias pasados)
+//Elimina turnos de dias pasados
 
 const deleteShifts = async (req, res) => {
   try {
