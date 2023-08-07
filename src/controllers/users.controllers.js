@@ -41,8 +41,8 @@ const getUsers = async (req, res) => {
 
 const editUsers = async (req, res) => {
   try {
-    const { email } = req.params;
-    const user = await Users.findOne({ where: { id: email } });
+    const { id } = req.params;
+    const user = await Users.findOne({ where: { id } });
 
     if (!user) {
       return res.status(404).send("User not found.");
@@ -50,7 +50,7 @@ const editUsers = async (req, res) => {
 
     const newBanValue = !user.ban;
 
-    await Users.update({ ban: newBanValue }, { where: { id: email } });
+    await Users.update({ ban: newBanValue }, { where: { id } });
 
     return res.status(200).send("OK");
   } catch (error) {

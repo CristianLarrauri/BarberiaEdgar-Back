@@ -7,7 +7,6 @@ module.exports = (sequelize) => {
       email: {
         type: DataTypes.STRING,
         allowNull: true,
-        primaryKey: true,
       },
       ban: {
         type: DataTypes.BOOLEAN,

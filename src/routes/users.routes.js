@@ -9,6 +9,6 @@ const {
 
 router.post("/", createUsers);
 router.get("/", getUsers);
-router.put("/:email", editUsers);
+router.put("/:id", editUsers);
 
 module.exports = router;
