@@ -27,7 +27,9 @@ const createServices = async (req, res) => {
 
 const getServices = async (req, res) => {
   try {
-    let services = await Services.findAll();
+    let services = await Services.findAll({
+      order: [["id", "ASC"]],
+    });
     return res.status(200).send(services);
   } catch (error) {
     console.error("Error in getServices", error);
