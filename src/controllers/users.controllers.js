@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const { Users } = require("../database");
 
 //_____________________________________________________________
@@ -24,7 +25,11 @@ const getUsers = async (req, res) => {
 
     if (email) {
       users = await Users.findAll({
-        where: { email: email },
+        where: {
+          email: {
+            [Op.iLike]: `%${email}%`,
+          },
+        },
       });
     } else {
       users = await Users.findAll();
