@@ -93,7 +93,9 @@ const editShifts = async (req, res) => {
     const shift = await Shifts.findOne({ where: { id: req.params.id } });
     const newOccupied = !shift.occupied;
     await shift.update({ occupied: newOccupied });
-    return res.status(200).send("OK");
+
+    const updatedShift = await Shifts.findOne({ where: { id: req.params.id } });
+    return res.status(200).send(updatedShift);
   } catch (error) {
     console.error("Error in editShifts", error);
   }
