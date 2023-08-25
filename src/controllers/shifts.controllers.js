@@ -86,7 +86,7 @@ const getShiftsId = async (req, res) => {
 };
 
 //_____________________________________________________________
-//Se usa para cambiar turnos en true o false
+//Se usa para habilitar/deshabilitar turnos segun preferencia del barbero
 
 const editShifts = async (req, res) => {
   try {
@@ -101,8 +101,38 @@ const editShifts = async (req, res) => {
   }
 };
 
+const editShiftsOfTheDay = async (req, res) => {
+  try {
+    const { barber, day, occupied } = req.query;
+
+    const shiftsToUpdate = await Shifts.findAll({
+      where: {
+        barber: barber,
+        day: day,
+      },
+    });
+
+    await Promise.all(
+      shiftsToUpdate.map(async (shift) => {
+        await shift.update({ occupied: occupied });
+      })
+    );
+
+    const updatedShifts = await Shifts.findAll({
+      where: {
+        barber: barber,
+        day: day,
+      },
+    });
+
+    return res.status(200).send(updatedShifts);
+  } catch (error) {
+    console.error("Error in editShiftsOfTheDay", error);
+  }
+};
+
 //_____________________________________________________________
-//Desabilita los turnos del dia que ya pasaron
+//Desabilita automaticamente los turnos del dia que ya pasaron
 
 const disableShifts = async (req, res) => {
   try {
@@ -170,4 +200,5 @@ module.exports = {
   editShifts,
   disableShifts,
   deleteShifts,
+  editShiftsOfTheDay,
 };
