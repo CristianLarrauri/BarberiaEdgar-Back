@@ -103,14 +103,16 @@ const editShifts = async (req, res) => {
 
 const editShiftsOfTheDay = async (req, res) => {
   try {
-    const { barber, day, occupied } = req.query;
+    const { barber, date, occupied } = req.query;
+    console.log(req.query, "asdasd");
 
     const shiftsToUpdate = await Shifts.findAll({
       where: {
         barber: barber,
-        day: day,
+        date: date,
       },
     });
+    console.log(shiftsToUpdate, "asdsa");
 
     await Promise.all(
       shiftsToUpdate.map(async (shift) => {
@@ -119,9 +121,14 @@ const editShiftsOfTheDay = async (req, res) => {
     );
 
     const updatedShifts = await Shifts.findAll({
-      where: {
-        barber: barber,
-        day: day,
+      order: [
+        ["barber", "ASC"],
+        ["date", "ASC"],
+        ["time", "ASC"],
+      ],
+      include: {
+        model: Barbers,
+        model: Customers,
       },
     });
 
