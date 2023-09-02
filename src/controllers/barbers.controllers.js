@@ -1,10 +1,4 @@
-const {
-  Barbers,
-  Barbers_Shifts,
-  Shifts,
-  Customers,
-  Barbers_Shifts_Customers,
-} = require("../database");
+const { Barbers, Shifts, Customers } = require("../database");
 const { createShifts, deleteShifts } = require("./shifts.controllers");
 
 //_____________________________________________________________
@@ -16,6 +10,8 @@ const createBarbers = async (req, res) => {
     await Barbers.findOrCreate({
       where: { name: name.charAt(0).toUpperCase() + name.slice(1) },
     });
+
+    await createShifts();
 
     return res.status(200).send("OK");
   } catch (error) {

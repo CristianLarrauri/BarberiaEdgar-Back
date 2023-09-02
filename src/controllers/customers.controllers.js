@@ -35,6 +35,7 @@ const createCustomers = async (req, res) => {
 };
 
 //_____________________________________________________________
+// HAY QUE RESOLVER COMO HACER PARA QUE LOS TURNOS FIJOS SE GUARDEN TANMBIEN EN LOS TURNOS QUE SE AGREGAN CON EL CORRER DE LOS DIAS, ESTA FUNCION LOGRA GUARDAR EN TODOS LOS TURNOS EXISTENTES QUE COINCIDAN PERO LOS FUTUROS QUE AUN NO EXISTEN QUEDAN EXCENTOS.
 
 const createRegularCustomers = async (req, res) => {
   try {
