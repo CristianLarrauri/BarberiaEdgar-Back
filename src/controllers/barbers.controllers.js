@@ -7,7 +7,7 @@ const createBarbers = async (req, res) => {
   try {
     let { name } = req.body;
 
-    await Barbers.create({
+    await Barbers.findOrCreate({
       where: { name: name.charAt(0).toUpperCase() + name.slice(1) },
     });
 
