@@ -36,6 +36,45 @@ const createCustomers = async (req, res) => {
 
 //_____________________________________________________________
 
+const createRegularCustomers = async (req, res) => {
+  try {
+    let {
+      firstName,
+      lastName,
+      nickname,
+      phoneNumber,
+      services,
+      user,
+      day,
+      barber,
+    } = req.body;
+
+    let newCustomer = await Customers.create({
+      firstName: firstName.charAt(0).toUpperCase() + firstName.slice(1),
+      lastName: lastName.charAt(0).toUpperCase() + lastName.slice(1),
+      nickname: nickname.charAt(0).toUpperCase() + nickname.slice(1),
+      phoneNumber,
+      services,
+      user,
+    });
+
+    let shiftsOfCustomers = await Shifts.findAll({
+      where: {
+        day,
+        barber,
+      },
+    });
+
+    await newCustomer.addShifts(shiftsOfCustomers);
+
+    return res.status(200).send(newCustomer);
+  } catch (error) {
+    console.error("Error in createRegularCustomers", error);
+  }
+};
+
+//_____________________________________________________________
+
 const getCustomers = async (req, res) => {
   try {
     const { user, searchbar } = req.query;
@@ -111,6 +150,7 @@ const deleteCustomers = async (req, res) => {
 
 module.exports = {
   createCustomers,
+  createRegularCustomers,
   getCustomers,
   getCustomersId,
   editCustomers,
