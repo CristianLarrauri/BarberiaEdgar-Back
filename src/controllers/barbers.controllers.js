@@ -7,8 +7,8 @@ const createBarbers = async (req, res) => {
   try {
     let { name } = req.body;
 
-    await Barbers.findOrCreate({
-      where: { name: name.charAt(0).toUpperCase() + name.slice(1) },
+    await Barbers.create({
+      name: name.charAt(0).toUpperCase() + name.slice(1),
     });
 
     await createShifts();
@@ -16,8 +16,10 @@ const createBarbers = async (req, res) => {
     return res.status(200).send("OK");
   } catch (error) {
     console.error("Error in createBarbers", error);
+    return res.status(500).send("Internal Server Error");
   }
 };
+
 
 //_____________________________________________________________
 
