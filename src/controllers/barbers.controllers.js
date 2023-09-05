@@ -20,7 +20,6 @@ const createBarbers = async (req, res) => {
   }
 };
 
-
 //_____________________________________________________________
 
 const getBarbers = async (req, res) => {
@@ -84,14 +83,29 @@ const editBarbers = async (req, res) => {
 };
 
 //_____________________________________________________________
-// Elimina un barbero
 
 const deleteBarbers = async (req, res) => {
   try {
-    await Barbers.destroy({ where: { name: req.params.id } });
+    const deletedBarber = await Barbers.findOne({
+      where: { name: req.params.id },
+    });
+
+    // const pepe = await Shifts.findAll({
+    //   where: { barber: deletedBarber.name },
+    // });
+
+    await Shifts.destroy({
+      where: { barber: deletedBarber.name },
+    });
+
+    await Barbers.destroy({
+      where: { name: req.params.id },
+    });
+
     return res.status(200).send("OK");
   } catch (error) {
-    console.error("Error in deleteBarbers", error);
+    console.error("Error en deleteBarbers", error);
+    return res.status(500).send("Error Interno del Servidor");
   }
 };
 
