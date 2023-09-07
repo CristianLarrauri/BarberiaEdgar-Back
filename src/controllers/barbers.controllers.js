@@ -86,16 +86,8 @@ const editBarbers = async (req, res) => {
 
 const deleteBarbers = async (req, res) => {
   try {
-    const deletedBarber = await Barbers.findOne({
-      where: { name: req.params.id },
-    });
-
-    // const pepe = await Shifts.findAll({
-    //   where: { barber: deletedBarber.name },
-    // });
-
     await Shifts.destroy({
-      where: { barber: deletedBarber.name },
+      where: { barber: req.params.id },
     });
 
     await Barbers.destroy({
@@ -105,7 +97,6 @@ const deleteBarbers = async (req, res) => {
     return res.status(200).send("OK");
   } catch (error) {
     console.error("Error en deleteBarbers", error);
-    return res.status(500).send("Error Interno del Servidor");
   }
 };
 
