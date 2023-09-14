@@ -47,16 +47,21 @@ const getUsers = async (req, res) => {
 const editUsers = async (req, res) => {
   try {
     const { id } = req.params;
+    const { prop } = req.query;
     const user = await Users.findOne({ where: { id } });
 
     if (!user) {
       return res.status(404).send("User not found.");
     }
 
-    const newBanValue = !user.ban;
-
-    await Users.update({ ban: newBanValue }, { where: { id } });
-
+    if (prop == "ban") {
+      const newBanValue = !user.ban;
+      await Users.update({ ban: newBanValue }, { where: { id } });
+    }
+    if (prop == "admin") {
+      const newAdminValue = !user.admin;
+      await Users.update({ admin: newAdminValue }, { where: { id } });
+    }
     return res.status(200).send("OK");
   } catch (error) {
     console.error("Error in editUsers", error);
