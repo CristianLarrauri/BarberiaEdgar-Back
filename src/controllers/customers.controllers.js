@@ -18,20 +18,25 @@ const createCustomers = async (req, res) => {
     let shiftOfCustomers = await Shifts.findByPk(shiftId);
 
     if (shiftOfCustomers.occupied == false) {
-      await shiftOfCustomers.update({ occupied: true });
-
-      let newCustomer = await Customers.create({
-        firstName: firstName.charAt(0).toUpperCase() + firstName.slice(1),
-        lastName: lastName.charAt(0).toUpperCase() + lastName.slice(1),
-        nickname: nickname.charAt(0).toUpperCase() + nickname.slice(1),
-        phoneNumber,
-        services,
-        user,
+      const [newCustomer, created] = await Customers.findOrCreate({
+        where: {
+          firstName: firstName.charAt(0).toUpperCase() + firstName.slice(1),
+          lastName: lastName.charAt(0).toUpperCase() + lastName.slice(1),
+          nickname: nickname.charAt(0).toUpperCase() + nickname.slice(1),
+          phoneNumber,
+          services,
+          user,
+        },
       });
 
-      await newCustomer.addShifts(shiftOfCustomers);
-
-      return res.status(200).send(newCustomer);
+      if (created) {
+        await newCustomer.addShifts(shiftOfCustomers);
+        return res.status(200).send(newCustomer);
+      } else {
+        return res
+          .status(400)
+          .send("A customer with these details already exists.");
+      }
     } else {
       return res
         .status(400)
