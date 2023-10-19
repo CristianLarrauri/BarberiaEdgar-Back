@@ -28,6 +28,8 @@ const createCustomers = async (req, res) => {
 
     await newCustomer.addShifts(shiftOfCustomers);
 
+    await shiftOfCustomers.update({ occupied: true });
+
     return res.status(200).send(newCustomer);
   } catch (error) {
     console.error("Error in createCustomers", error);
