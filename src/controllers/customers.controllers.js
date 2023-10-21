@@ -18,6 +18,8 @@ const createCustomers = async (req, res) => {
     let shiftOfCustomers = await Shifts.findByPk(shiftId);
 
     if (shiftOfCustomers.occupied == false) {
+      await shiftOfCustomers.update({ occupied: true });
+
       const [newCustomer, created] = await Customers.findOrCreate({
         where: {
           firstName: firstName.charAt(0).toUpperCase() + firstName.slice(1),
