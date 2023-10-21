@@ -113,8 +113,8 @@ const getCustomers = async (req, res) => {
       include: {
         model: Shifts,
         order: [
-          ["date", "ASC"],
           ["time", "DESC"],
+          ["date", "ASC"],
         ],
         include: {
           model: Barbers,
