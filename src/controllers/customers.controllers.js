@@ -114,7 +114,7 @@ const getCustomers = async (req, res) => {
         model: Shifts,
         order: [
           ["date", "ASC"],
-          ["time", "ASC"],
+          ["time", "DESC"],
         ],
         include: {
           model: Barbers,
