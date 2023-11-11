@@ -5,10 +5,10 @@ const { Users } = require("../database");
 
 const createUsers = async (req, res) => {
   try {
-    let { email } = req.body;
+    let { email, admin } = req.body;
 
     await Users.findOrCreate({
-      where: { email },
+      where: { email, admin },
     });
 
     return res.status(200).send("OK");
