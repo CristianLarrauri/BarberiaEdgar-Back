@@ -1,6 +1,7 @@
 [
   {
-    "name": "Edgar"
+    "name": "Edgar",
+    "admin": true
   },
   {
     "name": "Adriano"
