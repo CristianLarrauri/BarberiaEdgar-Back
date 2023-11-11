@@ -19,6 +19,11 @@ conn.sync({ force: true }).then(() => {
       for (const service of servicesData) {
         await axios.post(`http://localhost:${port}/services`, service);
       }
+
+      const superAdminData = require("./superAdmin.json");
+      for (const superAdmin of superAdminData) {
+        await axios.post(`http://localhost:${port}/users`, superAdmin);
+      }
       //______________________________________________________________
 
       console.log(`Server listening on port: ${port}`);

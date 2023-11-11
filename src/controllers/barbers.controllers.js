@@ -5,11 +5,10 @@ const { createShifts, deleteShifts } = require("./shifts.controllers");
 
 const createBarbers = async (req, res) => {
   try {
-    let { name, admin } = req.body;
+    let { name } = req.body;
 
     await Barbers.create({
       name: name.charAt(0).toUpperCase() + name.slice(1),
-      admin: admin,
     });
 
     await createShifts();
