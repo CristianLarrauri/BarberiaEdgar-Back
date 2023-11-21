@@ -9,6 +9,7 @@ module.exports = (sequelize) => {
       },
       price: {
         type: DataTypes.INTEGER,
+        defaultValue: 0,
       },
     },
     {
