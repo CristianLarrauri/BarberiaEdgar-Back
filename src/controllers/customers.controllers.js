@@ -1,5 +1,6 @@
 const { Op } = require("sequelize");
 const { Customers, Barbers, Shifts, Barbers_Shifts } = require("../database");
+const moment = require("moment");
 
 //_____________________________________________________________
 
@@ -93,6 +94,8 @@ const createRegularCustomers = async (req, res) => {
 
 const getCustomers = async (req, res) => {
   try {
+    await deleteOldCustomers();
+
     const { user, searchbar } = req.query;
     let customers;
     const whereClause = {};
@@ -133,6 +136,8 @@ const getCustomers = async (req, res) => {
 
 const getCustomersId = async (req, res) => {
   try {
+    await deleteOldCustomers();
+
     let customers = await Customers.findByPk(req.params.id);
     return res.status(200).send(customers);
   } catch (error) {
@@ -141,7 +146,6 @@ const getCustomersId = async (req, res) => {
 };
 
 //_____________________________________________________________
-// usar para editar un turno? O solo crear y eliminar?
 
 const editCustomers = async (req, res) => {
   try {
@@ -153,7 +157,6 @@ const editCustomers = async (req, res) => {
 };
 
 //_____________________________________________________________
-// usar para eliminar un turno?
 
 const deleteCustomers = async (req, res) => {
   try {
@@ -161,6 +164,31 @@ const deleteCustomers = async (req, res) => {
     return res.status(200).send("OK");
   } catch (error) {
     console.error("Error in deleteCustomers", error);
+  }
+};
+
+//_____________________________________________________________
+
+const deleteOldCustomers = async () => {
+  try {
+    const currentDate = moment();
+
+    const oldCustomers = await Customers.findAll({
+      include: {
+        model: Shifts,
+        where: {
+          date: {
+            [Op.lt]: currentDate,
+          },
+        },
+      },
+    });
+
+    for (const customer of oldCustomers) {
+      await customer.destroy();
+    }
+  } catch (error) {
+    console.error("Error in deleteOldCustomers", error);
   }
 };
 
