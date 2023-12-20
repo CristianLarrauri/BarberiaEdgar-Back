@@ -174,13 +174,21 @@ const deleteOldCustomers = async () => {
     const currentDate = moment();
 
     const oldCustomers = await Customers.findAll({
+      where: {
+        [Op.or]: [
+          {
+            "$Shifts.date$": {
+              [Op.lt]: currentDate,
+            },
+          },
+          {
+            "$Shifts.id$": null, // Assuming Shifts is a related model
+          },
+        ],
+      },
       include: {
         model: Shifts,
-        where: {
-          date: {
-            [Op.lt]: currentDate,
-          },
-        },
+        required: false, // Use this to make the join left outer join
       },
     });
 
