@@ -25,33 +25,15 @@ const createShifts = async (req, res) => {
         if (date.day() === 0) continue;
 
         const dayShift = daysOfWeek[date.day() - 1];
-        // Cambiar el horario de inicio a las 10hs
-        const startTime = moment({ hour: 10 });
+        const startTimeMorning = moment({ hour: 10 });
+        const startTimeAfternoon = moment({ hour: 15 });
 
-        // Horarios específicos solicitados
-        const specificTimes = [
-          "10",
-          "10:40",
-          "11:20",
-          "12",
-          "12:40",
-          "15",
-          "15:40",
-          "17",
-          "17:40",
-          "18:20",
-          "19",
-          "19:40",
-          "20:20",
-        ];
-
-        for (const specificTime of specificTimes) {
-          const [hour, minute] = specificTime.split(":");
+        //___________________________horario mañana
+        for (let i = 0; i <= 5; i++) {
+          const time = startTimeMorning.format("HH:mm");
           const dateTime = moment(date)
-            .hour(parseInt(hour))
-            .minute(parseInt(minute) || 0);
-
-          const time = dateTime.format("HH:mm");
+            .hour(startTimeMorning.hour())
+            .minute(startTimeMorning.minute());
 
           const [shift, created] = await Shifts.findOrCreate({
             where: { dateTime, date, time, day: dayShift, barber: barber.name },
@@ -60,6 +42,26 @@ const createShifts = async (req, res) => {
           if (created) {
             await shift.addBarbers(barber);
           }
+
+          startTimeMorning.add(40, "minutes");
+        }
+
+        //___________________________horario tarde
+        for (let i = 0; i <= 5; i++) {
+          const time = startTimeAfternoon.format("HH:mm");
+          const dateTime = moment(date)
+            .hour(startTimeAfternoon.hour())
+            .minute(startTimeAfternoon.minute());
+
+          const [shift, created] = await Shifts.findOrCreate({
+            where: { dateTime, date, time, day: dayShift, barber: barber.name },
+          });
+
+          if (created) {
+            await shift.addBarbers(barber);
+          }
+
+          startTimeAfternoon.add(40, "minutes");
         }
       }
     }
@@ -67,7 +69,6 @@ const createShifts = async (req, res) => {
     return res.status(200).send("OK");
   } catch (error) {
     console.error("Error in createShifts", error);
-    return res.status(500).send(`Internal Server Error: ${error.message}`);
   }
 };
 
