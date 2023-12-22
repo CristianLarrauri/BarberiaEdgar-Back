@@ -29,7 +29,7 @@ const createShifts = async (req, res) => {
         const startTimeAfternoon = moment({ hour: 15 });
 
         //___________________________horario mañana
-        for (let i = 0; i <= 5; i++) {
+        for (let i = 0; i <= 4; i++) {
           const time = startTimeMorning.format("HH:mm");
           const dateTime = moment(date)
             .hour(startTimeMorning.hour())
@@ -47,7 +47,7 @@ const createShifts = async (req, res) => {
         }
 
         //___________________________horario tarde
-        for (let i = 0; i <= 5; i++) {
+        for (let i = 0; i <= 8; i++) {
           const time = startTimeAfternoon.format("HH:mm");
           const dateTime = moment(date)
             .hour(startTimeAfternoon.hour())
