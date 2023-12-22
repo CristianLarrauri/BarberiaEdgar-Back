@@ -25,7 +25,7 @@ const createShifts = async (req, res) => {
         if (date.day() === 0) continue;
 
         const dayShift = daysOfWeek[date.day() - 1];
-        const startTime = moment({ hour: 9 });
+        const startTime = moment({ hour: 10 });
 
         for (let i = 0; i <= 16; i++) {
           const time = startTime.format("HH:mm");
@@ -41,7 +41,7 @@ const createShifts = async (req, res) => {
             await shift.addBarbers(barber);
           }
 
-          startTime.add(45, "minutes");
+          startTime.add(40, "minutes");
         }
       }
     }
