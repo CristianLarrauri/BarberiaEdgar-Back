@@ -1,18 +1,18 @@
 [
   {
     "name": "Corte + barba",
-    "price": 1700
+    "price": 0
   },
   {
     "name": "Corte",
-    "price": 1300
+    "price": 0
   },
   {
     "name": "Barba / Afeitado",
-    "price": 1000
+    "price": 0
   },
   {
     "name": "Perfilado de cejas",
-    "price": 200
+    "price":0
   }
 ]
