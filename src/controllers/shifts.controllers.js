@@ -211,6 +211,9 @@ const deleteShifts = async (req, res) => {
             [Op.in]: expiredShifts.map((shift) => shift.id),
           },
         },
+        include: {
+        model: Customers,
+      },
       });
     }
 
