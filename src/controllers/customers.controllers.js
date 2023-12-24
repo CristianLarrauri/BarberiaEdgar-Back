@@ -175,20 +175,14 @@ const deleteOldCustomers = async () => {
 
     const oldCustomers = await Customers.findAll({
       where: {
-        [Op.or]: [
-          {
-            "$Shifts.date$": {
-              [Op.lt]: currentDate,
-            },
-          },
-          {
-            "$Shifts.id$": null, // Assuming Shifts is a related model
-          },
+        [Op.and]: [
+          Sequelize.literal('`Shifts` IS NOT NULL'),
+          Sequelize.literal('`Shifts.id` IS NULL'),
         ],
       },
       include: {
         model: Shifts,
-        required: false, // Use this to make the join left outer join
+        required: false,
       },
     });
 
