@@ -51,6 +51,7 @@ Customers.belongsToMany(Shifts, {
 });
 Shifts.belongsToMany(Customers, {
   through: "Customers_Shifts",
+  onDelete: 'CASCADE',
 });
 
 module.exports = {
