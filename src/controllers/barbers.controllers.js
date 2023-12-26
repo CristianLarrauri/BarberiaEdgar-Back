@@ -24,8 +24,6 @@ const createBarbers = async (req, res) => {
 
 const getBarbers = async (req, res) => {
   try {
-    await createShifts();
-    await deleteShifts();
 
     let barbers = await Barbers.findAll({
       include: {
