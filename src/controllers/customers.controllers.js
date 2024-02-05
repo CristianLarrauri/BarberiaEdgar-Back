@@ -32,14 +32,8 @@ const createCustomers = async (req, res) => {
         },
       });
 
-      if (created) {
-        await newCustomer.addShifts(shiftOfCustomers);
-        return res.status(200).send(newCustomer);
-      } else {
-        return res
-          .status(400)
-          .send("A customer with these details already exists.");
-      }
+      await newCustomer.addShifts(shiftOfCustomers);
+      return res.status(200).send(newCustomer);
     } else {
       return res
         .status(400)
@@ -176,8 +170,8 @@ const deleteOldCustomers = async () => {
     const oldCustomers = await Customers.findAll({
       where: {
         [Op.and]: [
-          Sequelize.literal('`Shifts` IS NOT NULL'),
-          Sequelize.literal('`Shifts.id` IS NULL'),
+          Sequelize.literal("`Shifts` IS NOT NULL"),
+          Sequelize.literal("`Shifts.id` IS NULL"),
         ],
       },
       include: {
