@@ -18,31 +18,29 @@ const createCustomers = async (req, res) => {
 
     let shiftOfCustomers = await Shifts.findByPk(shiftId);
 
-    if (shiftOfCustomers.occupied == false) {
+    if (shiftOfCustomers && shiftOfCustomers.occupied === false) {
       await shiftOfCustomers.update({ occupied: true });
 
       const newCustomer = await Customers.create({
-        where: {
-          firstName: firstName.charAt(0).toUpperCase() + firstName.slice(1),
-          lastName: lastName.charAt(0).toUpperCase() + lastName.slice(1),
-          nickname: nickname.charAt(0).toUpperCase() + nickname.slice(1),
-          phoneNumber,
-          services,
-          user,
-        },
+        firstName: firstName.charAt(0).toUpperCase() + firstName.slice(1),
+        lastName: lastName.charAt(0).toUpperCase() + lastName.slice(1),
+        nickname: nickname.charAt(0).toUpperCase() + nickname.slice(1),
+        phoneNumber,
+        services,
+        user,
       });
 
       await newCustomer.addShifts(shiftOfCustomers);
       return res.status(200).send(newCustomer);
     } else {
-      return res
-        .status(400)
-        .send("An error occurred when requesting this shift");
+      return res.status(400).send("An error occurred when requesting this shift");
     }
   } catch (error) {
     console.error("Error in createCustomers", error);
+    return res.status(500).send("Internal Server Error");
   }
 };
+
 
 //_____________________________________________________________
 // HAY QUE RESOLVER COMO HACER PARA QUE LOS TURNOS FIJOS SE GUARDEN TANMBIEN EN LOS TURNOS QUE SE AGREGAN CON EL CORRER DE LOS DIAS, ESTA FUNCION LOGRA GUARDAR EN TODOS LOS TURNOS EXISTENTES QUE COINCIDAN PERO LOS FUTUROS QUE AUN NO EXISTEN QUEDAN EXCENTOS.
@@ -170,8 +168,8 @@ const deleteOldCustomers = async () => {
     const oldCustomers = await Customers.findAll({
       where: {
         [Op.and]: [
-          Sequelize.literal("`Shifts` IS NOT NULL"),
-          Sequelize.literal("`Shifts.id` IS NULL"),
+          Sequelize.literal('`Shifts` IS NOT NULL'),
+          Sequelize.literal('`Shifts.id` IS NULL'),
         ],
       },
       include: {
