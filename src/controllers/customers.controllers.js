@@ -21,7 +21,7 @@ const createCustomers = async (req, res) => {
     if (shiftOfCustomers.occupied == false) {
       await shiftOfCustomers.update({ occupied: true });
 
-      const [newCustomer, created] = await Customers.findOrCreate({
+      const newCustomer = await Customers.create({
         where: {
           firstName: firstName.charAt(0).toUpperCase() + firstName.slice(1),
           lastName: lastName.charAt(0).toUpperCase() + lastName.slice(1),
