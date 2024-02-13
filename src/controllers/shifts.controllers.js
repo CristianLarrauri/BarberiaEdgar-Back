@@ -76,7 +76,6 @@ const createShifts = async (req, res) => {
 
 const getShifts = async (req, res) => {
   try {
-    await createShifts();
     await deleteShifts();
     
     let shifts = await Shifts.findAll({
