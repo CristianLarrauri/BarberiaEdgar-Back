@@ -18,36 +18,27 @@ const createCustomers = async (req, res) => {
 
     let shiftOfCustomers = await Shifts.findByPk(shiftId);
 
-    if (shiftOfCustomers.occupied == false) {
+    if (shiftOfCustomers && shiftOfCustomers.occupied === false) {
       await shiftOfCustomers.update({ occupied: true });
 
-      const [newCustomer, created] = await Customers.findOrCreate({
-        where: {
-          firstName: firstName.charAt(0).toUpperCase() + firstName.slice(1),
-          lastName: lastName.charAt(0).toUpperCase() + lastName.slice(1),
-          nickname: nickname.charAt(0).toUpperCase() + nickname.slice(1),
-          phoneNumber,
-          services,
-          user,
-        },
+      const newCustomer = await Customers.create({
+        firstName: firstName.charAt(0).toUpperCase() + firstName.slice(1),
+        lastName: lastName.charAt(0).toUpperCase() + lastName.slice(1),
+        nickname: nickname.charAt(0).toUpperCase() + nickname.slice(1),
+        phoneNumber,
+        services,
+        user,
       });
 
-      if (created) {
-        await newCustomer.addShifts(shiftOfCustomers);
-        return res.status(200).send(newCustomer);
-      } else {
-        return res
-          .status(400)
-          .send("A customer with these details already exists.");
-      }
+      await newCustomer.addShifts(shiftOfCustomers);
+      return res.status(200).send(newCustomer);
     } else {
-      return res
-        .status(400)
-        .send("An error occurred when requesting this shift");
+      return res.status(400).send("An error occurred when requesting this shift");
     }
   } catch (error) {
     console.error("Error in createCustomers", error);
-  }
+    return res.status(500).send("Internal Server Error");
+  }
 };
 
 //_____________________________________________________________
